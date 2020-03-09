@@ -3,7 +3,7 @@ package org.cajunc2.automata;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.UIManager;
+import com.formdev.flatlaf.FlatLightLaf;
 
 import org.cajunc2.automata.algorithm.Algorithm;
 import org.cajunc2.automata.algorithm.LifeLikeAlgorithm;
@@ -14,9 +14,10 @@ public class Automata {
 	private static final Logger logger = Logger.getLogger(Automata.class.getName());
 
 	public static void main(String[] args) throws Exception {
+		FlatLightLaf.install();
 		 System.setProperty("sun.java2d.opengl", "True");
 		try {
-			setSystemLookAndFeel();
+			// setSystemLookAndFeel();
 			startApplication();
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Unexpected exception caught, exiting...", e);
@@ -24,21 +25,9 @@ public class Automata {
 		}
 	}
 
-	private static void setSystemLookAndFeel() {
-		String lafName = UIManager.getSystemLookAndFeelClassName();
-		try {
-			UIManager.setLookAndFeel(lafName);
-		} catch (RuntimeException e) {
-			throw e;
-		} catch (Exception e) {
-			// Unable to set any particular LAF. Java will go ahead
-			// and use whatever it's got, so this isn't fatal, just ugly :)
-		}
-	}
-
 	private static void startApplication() {
 		final int scaleFactor = 1;
-		Universe.Size size = new Universe.Size(480, 320);
+		Universe.Size size = new Universe.Size(640, 400);
 
 		Algorithm algorithm = new LifeLikeAlgorithm("23", "3");
 		Universe u = new Universe(algorithm, size);
