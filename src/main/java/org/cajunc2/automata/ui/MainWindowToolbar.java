@@ -1,18 +1,15 @@
 package org.cajunc2.automata.ui;
 
-import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
-import javax.swing.UIManager;
 
 import org.cajunc2.automata.Universe;
 import org.cajunc2.automata.ui.icons.Icons;
@@ -29,8 +26,6 @@ class MainWindowToolbar extends JToolBar {
 	public MainWindowToolbar(final Universe universe) {
 		this.universe = universe;
 		setFloatable(false);
-		Color c = UIManager.getLookAndFeelDefaults().getColor("controlDkShadow");
-		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, c));
 
 		JButton algorithmButton = createAlgorithmButton();
 		add(algorithmButton);
@@ -135,7 +130,7 @@ class MainWindowToolbar extends JToolBar {
 		final PaletteMenu popup = new PaletteMenu(universe);
 		JButton algorithmButton = new JButton(Icons.PALETTE);
 		algorithmButton.setFocusable(false);
-		algorithmButton.setToolTipText("Choose a different cellular automaton");
+		algorithmButton.setToolTipText("Choose a different color palette");
 		algorithmButton.addMouseListener(new MouseAdapter() {
 
 			@Override

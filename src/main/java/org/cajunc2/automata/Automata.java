@@ -1,8 +1,10 @@
 package org.cajunc2.automata;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 
 import org.cajunc2.automata.algorithm.Algorithm;
@@ -12,10 +14,18 @@ import org.cajunc2.automata.ui.MainWindow;
 
 public class Automata {
 	private static final Logger logger = Logger.getLogger(Automata.class.getName());
+	public static final boolean DARK_MODE;
+	static {
+		DARK_MODE = isMacMenuBarDarkMode();
+	}
 
 	public static void main(String[] args) throws Exception {
-		FlatLightLaf.install();
-		 System.setProperty("sun.java2d.opengl", "True");
+		if (DARK_MODE) {
+			FlatDarkLaf.install();
+		} else {
+			FlatLightLaf.install();
+		}
+		System.setProperty("sun.java2d.opengl", "True");
 		try {
 			// setSystemLookAndFeel();
 			startApplication();
@@ -37,6 +47,27 @@ public class Automata {
 		u.attachOutputDevice(output);
 
 		u.run();
+	}
+
+	/**
+	 * @return true if <code>defaults read -g AppleInterfaceStyle</code> has an exit
+	 *         status of <code>0</code> (i.e. _not_ returning "key not found").
+	 */
+	private static boolean isMacMenuBarDarkMode() {
+		try {
+			// check for exit status only. Once there are more modes than "dark" and
+			// "default", we might need to analyze string contents..
+			final Process proc = Runtime.getRuntime()
+					.exec(new String[] { "defaults", "read", "-g", "AppleInterfaceStyle" });
+			proc.waitFor(100, TimeUnit.MILLISECONDS);
+			return proc.exitValue() == 0;
+		} catch (Exception ex) {
+			// IllegalThreadStateException thrown by proc.exitValue(), if process didn't
+			// terminate
+			System.err.println(
+					"Could not determine, whether 'dark mode' is being used. Falling back to default (light) mode.");
+			return false;
+		}
 	}
 
 }
